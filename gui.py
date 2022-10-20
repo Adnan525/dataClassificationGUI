@@ -7,32 +7,69 @@ header = tk.Label(
     text = "Classification in Data Science",
     height = 1
 )
-header.place(x = 10, y = 10)
+header.place(x = root.winfo_reqwidth()/2, y = 5)
+
+selectDatasetLabel = tk.Label(text="Select a dataset: ")
+selectDatasetLabel.place(x = 100, y = 20)
+
 dataset = tk.StringVar()
 selectedDatasetLabel = tk.Label(text = "")
 selectedDatasetLabel.place(x = 100, y = 80)
+
 def foo():
-    selectedMessage = f"selected dataset is {dataset.get()}."
-    selectedDatasetLabel.config(text = selectedMessage)
-irisRadioButton = tk.Radiobutton(
+    selectionMessage = f"selected dataset is {dataset.get()}."
+    selectedDatasetLabel.config(text = selectionMessage)
+irisRB = tk.Radiobutton(
     text="Iris",
     variable = dataset,
     value='iris',
     command=foo
 )
-irisRadioButton.place(x=100, y=50)
-breastCancerRadioButton = tk.Radiobutton(
+irisRB.place(x=100, y=50)
+breastCancerRB = tk.Radiobutton(
     text = "Breast Cancer",
     variable = dataset,
     value = "breast-cancer",
     command = foo
 )
-breastCancerRadioButton.place(x=200, y=50)
-wineRadioButton = tk.Radiobutton(
+breastCancerRB.place(x=200, y=50)
+wineRB = tk.Radiobutton(
     text = "Wine",
     variable = dataset,
     value = "wine",
     command = foo
 )
-wineRadioButton.place(x = 400, y = 50)
+wineRB.place(x = 400, y = 50)
+
+selectClassifierLabel = tk.Label(text = "Select a classifier: ")
+selectClassifierLabel.place(x = 100, y = 120)
+
+classAlgName = tk.StringVar()
+selectedAlgorithmLabel = tk.Label(text = "")
+selectedAlgorithmLabel.place(x = 100, y  = 170)
+def onClickClassificationRB():
+    selectionMessage = f"{classAlgName.get()} algorithm selected."
+    selectedAlgorithmLabel.config(text=selectionMessage)
+
+knnRB = tk.Radiobutton(
+    text="KNN",
+    variable = classAlgName,
+    value='KNN',
+    command=onClickClassificationRB
+)
+knnRB.place(x=100, y=150)
+supportVectorRB = tk.Radiobutton(
+    text = "Support Vector Classification",
+    variable = classAlgName,
+    value = "Support Vector Classification",
+    command = onClickClassificationRB
+)
+supportVectorRB.place(x=200, y=150)
+gaussianRB = tk.Radiobutton(
+    text = "Gaussian Mixture Model",
+    variable = classAlgName,
+    value = "Gaussian Mixture Model",
+    command = onClickClassificationRB
+)
+gaussianRB.place(x = 400, y  = 150)
 root.mainloop()
