@@ -3,6 +3,7 @@ root = tk.Tk()
 root.title = "Classification in data science"
 root.geometry("700x500")
 
+isFoldCorrect = False
 header = tk.Label(
     text = "Classification in Data Science",
     height = 1
@@ -72,4 +73,25 @@ gaussianRB = tk.Radiobutton(
     command = onClickClassificationRB
 )
 gaussianRB.place(x = 400, y  = 150)
+
+fold = tk.StringVar(value="3") #can extract only string from entry
+foldLabel = tk.Label(text= "number of folds : ")
+foldLabel.place(x = 100, y = 200)
+
+def checkFold(str):
+    global isFoldCorrect
+    if int(str) <= 1:
+        showText = f"Fold number has to be greater than 1, you selected {fold.get()}"
+        isFoldCorrect = False
+    else:
+        showText = f"{fold.get()} fold selected"
+        isFoldCorrect = True
+    foldConfirmLabel = tk.Label(text= showText)
+    foldConfirmLabel.place(x = 100, y = 220)
+
+# fold.trace_add("read", checkFold())
+
+foldEntry = tk.Entry(textvariable=fold)
+foldEntry.bind("<KeyRelease>", checkFold)
+foldEntry.place(x=250, y=200)
 root.mainloop()
