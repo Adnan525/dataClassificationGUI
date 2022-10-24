@@ -78,30 +78,29 @@ gaussianRB = tk.Radiobutton(
     command = onClickClassificationRB
 )
 gaussianRB.place(x = 400, y  = 150)
-
+# set default fold value to 3
 fold = tk.StringVar(value="3") #can extract only string from entry
-checkEntryDefault = tk.StringVar(value = "no check has been done yet")
 foldLabel = tk.Label(text= "number of folds : ")
 foldLabel.place(x = 100, y = 200)
 
-checkEntry = tk.Entry(textvariable= checkEntryDefault)
-checkEntry.place(width=300, height = 100)
-checkEntry.place(x=100, y=250)
+checkMessageDefault = "no check has been done yet"
+checkMessage = tk.Text()
+checkMessage.insert("end", checkMessageDefault)
+checkMessage.place(width=500, height = 100)
+checkMessage.place(x=100, y=250)
 
 def check():
     global targetDF
     global targetModel
     global isFoldCorrect
+    checkMessage.delete("1.0", "end")
     if int(int(fold.get())) <= 1:
-        checkEntryDefault = f"Fold number has to be greater than 1, you selected {fold.get()}"
+        checkMessage.insert("end", f"Fold number has to be greater than 1, you selected {fold.get()}")
         isFoldCorrect = False
     else:
-        checkEntryDefault = f"{targetDF} dataset selected.\n"
-        nextLine = f"{targetModel} algorithm selected.\n"
-        temp= f"{fold.get()} fold selected"
-        checkEntry.insert(-1, checkEntryDefault)
-        checkEntry.insert(1, nextLine)
-        checkEntry.insert(2, temp)
+        checkMessage.insert("end", f"{targetDF} dataset selected.\n")
+        checkMessage.insert("end", f"{targetModel} algorithm selected.\n")
+        checkMessage.insert("end", f"{fold.get()} fold selected.")
         isFoldCorrect = True
 
 # fold.trace_add("read", checkFold())
