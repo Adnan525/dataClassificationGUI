@@ -2,7 +2,8 @@ import tkinter as tk
 root = tk.Tk()
 root.title = "Classification in data science"
 root.geometry("700x500")
-
+targetDF = ""
+targetModel = ""
 isFoldCorrect = False
 header = tk.Label(
     text = "Classification in Data Science",
@@ -18,8 +19,10 @@ selectedDatasetLabel = tk.Label(text = "")
 selectedDatasetLabel.place(x = 100, y = 80)
 
 def foo():
+    global targetDF
     selectionMessage = f"selected dataset is {dataset.get()}."
     selectedDatasetLabel.config(text = selectionMessage)
+    targetDF = dataset.get()
 irisRB = tk.Radiobutton(
     text="Iris",
     variable = dataset,
@@ -49,8 +52,10 @@ classAlgName = tk.StringVar()
 selectedAlgorithmLabel = tk.Label(text = "")
 selectedAlgorithmLabel.place(x = 100, y  = 170)
 def onClickClassificationRB():
+    global targetModel
     selectionMessage = f"{classAlgName.get()} algorithm selected."
     selectedAlgorithmLabel.config(text=selectionMessage)
+    targetModel = classAlgName.get()
 
 knnRB = tk.Radiobutton(
     text="KNN",
@@ -75,23 +80,39 @@ gaussianRB = tk.Radiobutton(
 gaussianRB.place(x = 400, y  = 150)
 
 fold = tk.StringVar(value="3") #can extract only string from entry
+checkEntryDefault = tk.StringVar(value = "no check has been done yet")
 foldLabel = tk.Label(text= "number of folds : ")
 foldLabel.place(x = 100, y = 200)
 
-def checkFold(str):
+checkEntry = tk.Entry(textvariable= checkEntryDefault)
+checkEntry.place(width=300, height = 100)
+checkEntry.place(x=100, y=250)
+
+def check():
+    global targetDF
+    global targetModel
     global isFoldCorrect
-    if int(str) <= 1:
-        showText = f"Fold number has to be greater than 1, you selected {fold.get()}"
+    if int(int(fold.get())) <= 1:
+        checkEntryDefault = f"Fold number has to be greater than 1, you selected {fold.get()}"
         isFoldCorrect = False
     else:
-        showText = f"{fold.get()} fold selected"
+        checkEntryDefault = f"{targetDF} dataset selected.\n"
+        nextLine = f"{targetModel} algorithm selected.\n"
+        temp= f"{fold.get()} fold selected"
+        checkEntry.insert(-1, checkEntryDefault)
+        checkEntry.insert(1, nextLine)
+        checkEntry.insert(2, temp)
         isFoldCorrect = True
-    foldConfirmLabel = tk.Label(text= showText)
-    foldConfirmLabel.place(x = 100, y = 220)
 
 # fold.trace_add("read", checkFold())
 
 foldEntry = tk.Entry(textvariable=fold)
-foldEntry.bind("<KeyRelease>", checkFold)
 foldEntry.place(x=250, y=200)
+
+loadButton = tk.Button(
+    text = "Check",
+    command = check
+)
+loadButton.place(x = 500, y = 200)
+
 root.mainloop()
