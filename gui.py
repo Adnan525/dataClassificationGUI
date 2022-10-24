@@ -1,15 +1,16 @@
 import tkinter as tk
 root = tk.Tk()
-root.title = "Classification in data science"
+root.title("Classification in data science")
 root.geometry("700x500")
+
+# global var to keep track of chosen dataset and algorithm
 targetDF = ""
 targetModel = ""
+
+# boolean checks to activate run button
 isFoldCorrect = False
-header = tk.Label(
-    text = "Classification in Data Science",
-    height = 1
-)
-header.place(x = root.winfo_reqwidth()/2, y = 5)
+isDataLoaded = False
+isClassSelected = False
 
 selectDatasetLabel = tk.Label(text="Select a dataset: ")
 selectDatasetLabel.place(x = 100, y = 20)
@@ -60,21 +61,21 @@ def onClickClassificationRB():
 knnRB = tk.Radiobutton(
     text="KNN",
     variable = classAlgName,
-    value='KNN',
+    value='knn',
     command=onClickClassificationRB
 )
 knnRB.place(x=100, y=150)
 supportVectorRB = tk.Radiobutton(
     text = "Support Vector Classification",
     variable = classAlgName,
-    value = "Support Vector Classification",
+    value = "svm",
     command = onClickClassificationRB
 )
 supportVectorRB.place(x=200, y=150)
 gaussianRB = tk.Radiobutton(
     text = "Gaussian Mixture Model",
     variable = classAlgName,
-    value = "Gaussian Mixture Model",
+    value = "gmm",
     command = onClickClassificationRB
 )
 gaussianRB.place(x = 400, y  = 150)
