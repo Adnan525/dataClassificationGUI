@@ -117,8 +117,15 @@ def main():
             isFoldCorrect = False
         else:
             global targetFold
-            checkMessage.insert("end", f"{targetDF} dataset selected.\n")
-            checkMessage.insert("end", f"{targetModel} algorithm selected.\n")
+            if targetDF == "":
+                checkMessage.insert("end", "No dataset selected.\n")
+            else:
+                checkMessage.insert("end", f"{targetDF} dataset selected.\n")
+
+            if targetModel == "":
+                checkMessage.insert("end", "No algorithm selected.\n")
+            else:
+                checkMessage.insert("end", f"{targetModel} algorithm selected.\n")
             checkMessage.insert("end", f"{fold.get()} fold selected.\n")
             isFoldCorrect = True
             targetFold = int(fold.get())
