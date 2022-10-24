@@ -2,17 +2,22 @@ from sklearn import datasets, neighbors, metrics, mixture, svm
 from sklearn.model_selection import train_test_split, GridSearchCV
 import matplotlib.pyplot as plt
 import numpy as np
+
+#keep track of accuracy and best parameter
+bestParam = ""
+modelAccuracy = ""
 def loadDS(name):
     # we have 3 values here iris, breast-cancer, wine
     # no else block required cause we use radio button and each RB has associated value
     if name == "iris":
-        return datasets.load_iris
+        return datasets.load_iris()
     if name == "breast-cancer":
-        return datasets.load_breast_cancer
+        return datasets.load_breast_cancer()
     if name == "wine":
-        return datasets.load_wine
+        return datasets.load_wine()
 
-def classification(name, alg, fold, bestParam, accuracy):
+def classification(name, alg, fold, checkMessage):
+    global bestParam, modelAccuracy
     #loading selected dataset
     df = loadDS(name)
 
@@ -27,7 +32,7 @@ def classification(name, alg, fold, bestParam, accuracy):
     # will check for knn and svm algorithms
     if alg == "knn":
         classAlg = neighbors.KNeighborsClassifier()
-        param = [{"n_neighbors" : range(20)}]
+        param = [{"n_neighbors" : range(1, 50)}]
         xLabel = "KNN"
     elif alg == "svm":
         classAlg = svm.SVC()
@@ -57,12 +62,32 @@ def classification(name, alg, fold, bestParam, accuracy):
                                                               std * 2))
     print()
     print("Best parameter: ", gscv_classifier.best_params_)
+    bestParam += str(gscv_classifier.best_params_)
+    checkMessage.insert("end", f"Best parameter : {bestParam}\n")
+
 
     #using trhe gscv classfier on test dataset
     y_pred = gscv_classifier.predict(X_test)
 
+    # collecting all the dictionary values to xVal
+    #plot againg means
+    xVal = []
+    for i in results:
+        xVal.append(list(i.values())[0])
+
     #plotting confusion matrix and accuracy
     accuracy = metrics.accuracy_score(y_test, y_pred) * 100
+    # modelAccuracy = str(accuracy)
+    # checkMessage.insert("end", f"Accuracy : {modelAccuracy}")
     plotcm = metrics.plot_confusion_matrix(gscv_classifier, X_test, y_test, display_labels = class_names)
     plotcm.ax_.set_title("Accuracy = {0:.2f}%".format(accuracy))
+    plt.show()
+
+    # x_axis = list(results[0:len(results)].values())
+    x_axis = xVal
+    y_axis = means
+    plot_axes = plt.axes()
+    plt.xlabel(xLabel)
+    plt.ylabel('CV score')
+    plot_axes.plot(x_axis, y_axis)
     plt.show()
